@@ -13,9 +13,14 @@ type StudentType = {
 export const NewComponent = (props:NewComponentType) => {
     return (
         <ul>
-            <li>Coffee</li>
-            <li>Tea</li>
-            <li>Milk</li>
+            {props.students.map((objectFromStudentArray, index)=>{
+                return (
+                    <li key={objectFromStudentArray.id}>
+                        <span>{objectFromStudentArray.name} </span>
+                        <span>age:{objectFromStudentArray.age}</span>
+                    </li>
+                );
+            })}
         </ul>
     );
 };
