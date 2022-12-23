@@ -1,127 +1,56 @@
 import React, {useState} from 'react';
 import './App.css';
-import { Body } from './site/body';
-import {Header} from "./site/header";
-import {Footer} from "./site/footer";
-import {NewComponent} from "./site/NewComponent";
-import {Button} from "./components/Button";
+
+type filterType = 'all' | 'dollar' | 'ruble'
 
 function App() {
 
-    let [students, setStudents] = useState([
-        {id: 1, name: "James", age: 8},
-        {id: 2, name: "Robert", age: 18},
-        {id: 3, name: "John", age: 28},
-        {id: 4, name: "Michael", age: 38},
-        {id: 5, name: "William", age: 48},
-        {id: 6, name: "David", age: 58},
-        {id: 7, name: "Richard", age: 68},
-        {id: 8, name: "Joseph", age: 78},
-        {id: 9, name: "Thomas", age: 88},
-        {id: 10, name: "Charles", age: 98},
-        {id: 11, name: "Christopher", age: 108},
+    let [money, setMoney] = useState([
+        {banknote: "dollar", nominal: 100, number: 'a1234567890'},
+        {banknote: "dollar", nominal: 50, number: 'z1234567890'},
+        {banknote: "ruble", nominal: 100, number: 'w1234567890'},
+        {banknote: "dollar", nominal: 100, number: 'e1234567890'},
+        {banknote: "dollar", nominal: 50, number: 'c1234567890'},
+        {banknote: "ruble", nominal: 100, number: 'r1234567890'},
+        {banknote: "dollar", nominal: 50, number: 'X1234567890'},
+        {banknote: "ruble", nominal: 100, number: 'V1234567890'}
     ])
 
-    // Domashka
+    const [filter, setFilter] = useState<filterType>('all')
 
-    const topCars = [
-        {manufacturer:'BMW', model:'m5cs'},
-        {manufacturer:'Mercedes', model:'e63s'},
-        {manufacturer:'Audi', model:'rs6'}
-    ];
+    let currentMoney = money
 
-    type NewComponentCarsType = {topCars:TopCarsType[]};
-
-    type TopCarsType = {
-        manufacturer: string,
-        model: string
-    };
-
-    const NewComponentCars = (props:NewComponentCarsType) => {
-        return (
-            <table>
-                    <tbody><th>Top Cars</th></tbody>
-                <tr>
-                    <th>Manufacturer</th>
-                    {props.topCars.map((objectFromTopCarsArray, index)=>{
-                        return (
-                            <th key={objectFromTopCarsArray.model}>
-                                {objectFromTopCarsArray.manufacturer}
-                            </th>
-                        );
-                    })}
-                </tr>
-                <tr>
-                    <th>Model</th>
-                    {props.topCars.map((objectFromTopCarsArray, index)=>{
-                        return (
-                            <th key={objectFromTopCarsArray.model}>
-                                {objectFromTopCarsArray.model}
-                            </th>
-                        );
-                    })}
-                </tr>
-            </table>
-        );
+    if (filter === 'dollar'){
+        currentMoney = money.filter(filteredMoney => filteredMoney.banknote === "dollar")
     }
 
-   /* const myFirstSubscriber = () => {
-        console.log('Hello im Vasya!')
+    if (filter === 'ruble'){
+        currentMoney = money.filter(filteredMoney => filteredMoney.banknote === "ruble")
     }
-
-    const mySecondSubscriber = () => {
-        console.log('Hello im Ivan!')
-    }*/
-
-    const onClickHandler = (name: string) => {
-        console.log(name)
+    
+    const onFilterHandler = (nameButton: filterType) => {
+        setFilter(nameButton)
     }
-
-   /* const for1 = () => {
-        console.log(100200)
-    }
-
-    const for2 = (number: number) => {
-        console.log(number)
-    }*/
-
-    const buttonSub1 = (subscriber: string, age: number) => {
-        console.log(subscriber, age)
-    }
-
-    const buttonSub2 = (subscriber: string, age: number) => {
-        console.log(subscriber, age)
-    }
-
+    
 
     return(
-        <div>
-            {/*<div>
-                <NewComponent students={students}/>
-                <NewComponentCars topCars={topCars}/>
-            </div>
-            <div>
-                <Header title={'New body'}/>
-                <Body titleForBody={'New Body'}/>
-                <Footer titleForfooter={'New Footer'}/>
-            </div>*/}
-            <div>
-                <button onClick={(event)=>onClickHandler('Ivan')}>MyYouTubeChannel-1</button>
-                <button onClick={(event) => onClickHandler('Vasya')}>MyYouTubeChannel-2</button>
-
-                <Button name={'MyYouTubeChannel-1'} callBack={() => buttonSub1('Ivan', 21)}/>
-                <Button name={'MyYouTubeChannel-2'} callBack={() => buttonSub2('Vasya', 18)}/>
-
-                {/*<button onClick={() => onClickHandler('Ivan')}>MyYouTubeChannel-3</button>*/}
-                {/* <button onClick={() => onClickHandler('some info')}>MyYouTubeChannel-3</button>*/}
-
-                {/*<button onClick={for1}>1</button>
-                <button onClick={() => for2(100200)}>2</button>*/}
-            </div>
-        </div>
+        <>
+        <ul>
+            {currentMoney.map((objFromMoneyArr, index) => {
+                return (
+                    <li key={index}>
+                        <span>{objFromMoneyArr.banknote} </span>
+                        <span>{objFromMoneyArr.nominal} </span>
+                        <span>{objFromMoneyArr.number}</span>
+                    </li>
+                )
+            })}
+        </ul>
+            <button onClick={() => onFilterHandler('all')}>All</button>
+            <button onClick={() => onFilterHandler('ruble')}>Rubles</button>
+            <button onClick={() => onFilterHandler('dollar')}>Dollars</button>
+        </>
     );
-
-
 }
 
 export default App;
